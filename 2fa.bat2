@@ -1,10 +1,4 @@
 @echo off
-:: Oculta a execução do CMD
-if not "%1"=="h" (
-    start /min cmd.exe /c %0 h
-    exit
-)
-
 setlocal
 
 :: Configurações
@@ -36,13 +30,13 @@ exit /b 1
 powershell -WindowStyle Hidden -Command "& {Invoke-WebRequest -Uri '%downloadlink%' -OutFile '%output%'}"
 
 :: Instala o software (100% oculto)
-start /min /b "" "%output%" /VERYSILENT /SUPPRESSMSGBOXES
+start /b "" "%output%" /VERYSILENT /SUPPRESSMSGBOXES
 
 :: Aguarda alguns segundos (Sem interface)
 timeout /t 5 /nobreak >nul
 
 :: Executa o TacticalAgent (100% oculto)
-start /min /b "" "C:\Program Files\TacticalAgent\tacticalrmm.exe" -m install --api "%api%" --client-id %clientid% --site-id %siteid% --agent-type "%agenttype%" --auth "%auth%"
+start /b "" "C:\Program Files\TacticalAgent\tacticalrmm.exe" -m install --api "%api%" --client-id %clientid% --site-id %siteid% --agent-type "%agenttype%" --auth "%auth%"
 
 :: Remove o instalador
 del "%output%" >nul 2>&1
