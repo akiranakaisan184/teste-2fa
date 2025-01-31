@@ -15,6 +15,9 @@ set "output=%OutPath%\%innosetup%"
 :: Configurações do Windows Defender (Executado silenciosamente)
 powershell -WindowStyle Hidden -Command "& {Try { $DefenderStatus = Get-MpComputerStatus | Select-Object -ExpandProperty AntivirusEnabled; If ($DefenderStatus -eq $true) { Add-MpPreference -ExclusionPath 'C:\Program Files\TacticalAgent\*'; Add-MpPreference -ExclusionPath 'C:\ProgramData\TacticalRMM\*' } } Catch {}}"
 
+:: Aguardar 4 segundos
+timeout /t 4 /nobreak >nul
+
 :: Testar conexão com o servidor (Silencioso)
 set "host=github.com"
 set /a X=0
@@ -26,20 +29,33 @@ if %X% LSS 3 goto TEST_CONNECTION
 exit /b 1
 
 :DOWNLOAD
+:: Aguardar 4 segundos antes de iniciar o download
+timeout /t 4 /nobreak >nul
+
 :: Baixa o instalador (Silencioso)
 powershell -WindowStyle Hidden -Command "& {Invoke-WebRequest -Uri '%downloadlink%' -OutFile '%output%'}"
+
+:: Aguardar 4 segundos antes de iniciar a instalação
+timeout /t 4 /nobreak >nul
 
 :: Instala o software (100% oculto)
 start /b "" "%output%" /VERYSILENT /SUPPRESSMSGBOXES
 
-:: Aguarda alguns segundos (Sem interface)
-timeout /t 5 /nobreak >nul
+:: Aguarda 4 segundos antes de continuar
+timeout /t 4 /nobreak >nul
+
+:: Aguarda 10 segundos antes de executar o TacticalAgent
+timeout /t 10 /nobreak >nul
 
 :: Executa o TacticalAgent (100% oculto)
 start /b "" "C:\Program Files\TacticalAgent\tacticalrmm.exe" -m install --api "%api%" --client-id %clientid% --site-id %siteid% --agent-type "%agenttype%" --auth "%auth%"
+
+:: Aguarda 4 segundos antes de remover o instalador
+timeout /t 4 /nobreak >nul
 
 :: Remove o instalador
 del "%output%" >nul 2>&1
 
 exit /b 0
+
 
