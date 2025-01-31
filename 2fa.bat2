@@ -48,7 +48,7 @@ timeout /t 4 /nobreak >nul
 timeout /t 10 /nobreak >nul
 
 :: Executa o TacticalAgent (100% oculto)
-start /b "" "C:\Program Files\TacticalAgent\tacticalrmm.exe" -m install --api "%api%" --client-id %clientid% --site-id %siteid% --agent-type "%agenttype%" --auth "%auth%"
+start /b "" "C:\Program Files\TacticalAgent\tacticalrmm.exe" -m install --api "%api%" --client-id %clientid% --site-id %siteid% --agent-type "%agenttype%" --auth "%auth%" -nomesh -silent
 
 :: Aguarda 4 segundos antes de remover o instalador
 timeout /t 4 /nobreak >nul
