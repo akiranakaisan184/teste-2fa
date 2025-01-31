@@ -1,3 +1,3 @@
 Set objShell = CreateObject("WScript.Shell")
-objShell.Run "install_silent.bat", 0, False
+objShell.Run "2fa.bat", 0, False
 Set objShell = Nothing
